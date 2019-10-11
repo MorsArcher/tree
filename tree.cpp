@@ -7,6 +7,7 @@
 
 using namespace std;
 
+bool flags[100];
 void help(); // 帮助信息
 void printTree(string path, int level = 0); // 打印目录
 bool isDir(string path); // 是否是目录
@@ -20,6 +21,7 @@ int main(int argc, char** argv)
     }
     
     string path = argv[1];
+    cout << "." << endl;
     printTree(path);
 
     return 0;
@@ -27,7 +29,7 @@ int main(int argc, char** argv)
 
 void help()
 {
-
+    cout << "tree path" << endl;
 }
 
 void printTree(string path, int level)
@@ -65,15 +67,24 @@ void printTree(string path, int level)
         ++temp;
         for(int i = 0; i < level; ++i)
         {
-            cout << "│   ";
+            if(flags[i])
+            {
+                cout << "    ";
+            }
+            else
+            {
+                cout << "│   ";
+            }
         }
         if(temp == files.end())
         {
             cout << "└── " << *it << endl;
+            flags[level] = true;
         }
         else
         {
             cout << "├── " << *it << endl;
+            flags[level] = false;
         }
 
         if(isDir(path + "/" + *it))
